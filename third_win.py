@@ -7,13 +7,14 @@ from final_win import *
 
 
 class ThirdWin(QWidget):
-    def __init__(self, exp):
+    def __init__(self, exp, start_time):
         super().__init__()
         self.exp = exp
         self.set_appear()
         self.initUI()
         self.connects()
         self.show()
+        self.start_time = start_time
     
     def timer_test(self):
         global time
@@ -33,7 +34,7 @@ class ThirdWin(QWidget):
         if time.toString("hh:mm:ss") == "00:00:00":
             self.timer.stop()
     
-    def timer_sits(self):
+    def timer_sits1(self):
         global time
         a = self.exp.time1.split(",")
         h, m, s = map(int,a)
@@ -42,6 +43,47 @@ class ThirdWin(QWidget):
         self.timer.timeout.connect(self.timer2Event)
         self.timer.start(1500)
     
+    def timer_sits2(self):
+        global time
+        a = self.exp.time2.split(",")
+        h, m, s = map(int,a)
+        time = QTime(h, m, s)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
+    
+    def timer_sits3(self):
+        global time
+        a = self.exp.time3.split(",")
+        h, m, s = map(int,a)
+        time = QTime(h, m, s)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
+    def timer_sits4(self):
+        global time
+        a = self.exp.time4.split(",")
+        h, m, s = map(int,a)
+        time = QTime(h, m, s)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
+    def timer_sits5(self):
+        global time
+        a = self.exp.time5.split(",")
+        h, m, s = map(int,a)
+        time = QTime(h, m, s)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
+    def timer_sits6(self):
+        global time
+        a = self.exp.time6.split(",")
+        h, m, s = map(int,a)
+        time = QTime(h, m, s)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timer2Event)
+        self.timer.start(1500)
     def timer2Event(self):
         global time
         time = time.addSecs(-1)
@@ -60,7 +102,6 @@ class ThirdWin(QWidget):
         self.btn_next = QPushButton(txt_resume)
         self.text_timer = QLabel("")
         #этап 1
-        print(self.exp.exc1)
         self.exp1 = QLabel(self.exp.exc1)
         self.test1 = QPushButton(txt_timers)
         #этап 2
@@ -146,13 +187,13 @@ class ThirdWin(QWidget):
 
     def connects(self):
         self.btn_next.clicked.connect(self.next_click)
-        self.test1.clicked.connect(self.timer_sits)
-        self.test2.clicked.connect(self.timer_sits)
-        self.test3.clicked.connect(self.timer_sits)
-        self.test4.clicked.connect(self.timer_sits)
-        self.test5.clicked.connect(self.timer_sits)
+        self.test1.clicked.connect(self.timer_sits1)
+        self.test2.clicked.connect(self.timer_sits2)
+        self.test3.clicked.connect(self.timer_sits3)
+        self.test4.clicked.connect(self.timer_sits4)
+        self.test5.clicked.connect(self.timer_sits5)
         self.test6.clicked.connect(self.timer_test)
 
     def next_click(self):
         self.hide()
-        self.tw = FinalWin()
+        self.tw = FinalWin(self.start_time)

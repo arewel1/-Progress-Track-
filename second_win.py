@@ -6,6 +6,10 @@ from PyQt5.QtWidgets import (
 from instr import *
 from third_win import *
 
+from time import *
+
+
+
 class Experiment():
     def __init__(self, ex1, time1, ex2, time2, ex3, time3, ex4, time4, ex5, time5, ex6, time6):
         self.exc1 = ex1
@@ -22,14 +26,17 @@ class Experiment():
         self.time6 = time6
 
 
+
 class TestWin(QWidget):
     
     def __init__(self):
         super().__init__()
+        self.start_time = time()
         self.set_appear()
         self.initUI()
         self.connects()
         self.show()
+
 
         self.ex1 = "Пусто"
         self.ex2 = "Пусто"
@@ -55,6 +62,7 @@ class TestWin(QWidget):
         self.hint4 = QLineEdit(txt_1nfo)
         self.hint5 = QLineEdit(txt_1nfo)
         self.hint6 = QLineEdit(txt_2nfo)
+        self.errop = QLabel(" ")
         #этап 1
         self.btn_answer11 = QRadioButton(txt_1ex1)
         self.btn_answer12 = QRadioButton(txt_1ex2)
@@ -66,7 +74,7 @@ class TestWin(QWidget):
         self.button_group1.addButton(self.btn_answer12, id = 2)
         self.button_group1.addButton(self.btn_answer13, id = 3)
         self.button_group1.addButton(self.btn_answer14, id = 4)
-        self.button1 = QPushButton("Пpоверить")
+        self.button1 = QPushButton("Подтвердить")
 
         #этап 2
         self.btn_answer21 = QRadioButton(txt_2ex1)
@@ -79,7 +87,7 @@ class TestWin(QWidget):
         self.button_group2.addButton(self.btn_answer22, id = 2)
         self.button_group2.addButton(self.btn_answer23, id = 3)
         self.button_group2.addButton(self.btn_answer24, id = 4)
-        self.button2 = QPushButton("Пpоверить")
+        self.button2 = QPushButton("Подтвердить")
 
         #этап 3
         self.btn_answer31 = QRadioButton(txt_3ex1)
@@ -92,7 +100,7 @@ class TestWin(QWidget):
         self.button_group3.addButton(self.btn_answer32, id = 2)
         self.button_group3.addButton(self.btn_answer33, id = 3)
         self.button_group3.addButton(self.btn_answer34, id = 4)
-        self.button3 = QPushButton("Пpоверить")
+        self.button3 = QPushButton("Подтвердить")
 
         #этап 4
         self.btn_answer41 = QRadioButton(txt_4ex1)
@@ -105,7 +113,7 @@ class TestWin(QWidget):
         self.button_group4.addButton(self.btn_answer42, id = 2)
         self.button_group4.addButton(self.btn_answer43, id = 3)
         self.button_group4.addButton(self.btn_answer44, id = 4)
-        self.button4 = QPushButton("Пpоверить")
+        self.button4 = QPushButton("Подтвердить")
 
         #этап 5
         self.btn_answer51 = QRadioButton(txt_5ex1)
@@ -118,7 +126,7 @@ class TestWin(QWidget):
         self.button_group5.addButton(self.btn_answer52, id = 2)
         self.button_group5.addButton(self.btn_answer53, id = 3)
         self.button_group5.addButton(self.btn_answer54, id = 4)
-        self.button5 = QPushButton("Пpоверить")
+        self.button5 = QPushButton("Подтвердить")
 
         #этап 6
         self.btn_answer61 = QRadioButton(txt_6ex1)
@@ -131,7 +139,7 @@ class TestWin(QWidget):
         self.button_group6.addButton(self.btn_answer62, id = 2)
         self.button_group6.addButton(self.btn_answer63, id = 3)
         self.button_group6.addButton(self.btn_answer64, id = 4)
-        self.button6 = QPushButton("Пpоверить")
+        self.button6 = QPushButton("Подтвердить")
 
 
         #Расположение
@@ -290,7 +298,9 @@ class TestWin(QWidget):
         v_linem.addWidget(
             self.btn_next, alignment = Qt.AlignCenter
         )
-
+        v_linem.addWidget(
+            self.errop, alignment = Qt.AlignCenter
+        )
         self.setLayout(v_linem)
 
 
@@ -317,12 +327,29 @@ class TestWin(QWidget):
         self.ex6 = (self.button_group1.button(self.button_group1.checkedId()).text())
 
     def next_click(self):
-        self.hide()
-        self.exp = Experiment(self.ex1, self.hint1.text(), self.ex2, self.hint2.text(), self.ex3, self.hint3.text(), self.ex4, self.hint4.text(), self.ex5, self.hint5.text(), self.ex6, self.hint6.text())
-        print(self.exp)
-        self.tw = ThirdWin(self.exp)
+        try:
+            a1 = self.hint1.text().split(",")
+            h, m, s = map(int,a1)
+            a2 = self.hint2.text().split(",")
+            h, m, s = map(int,a2)
+            a3 = self.hint3.text().split(",")
+            h, m, s = map(int,a3)
+            a4 = self.hint4.text().split(",")
+            h, m, s = map(int,a4)
+            a5 = self.hint5.text().split(",")
+            h, m, s = map(int,a5)
+            a6 = self.hint6.text().split(",")
+            h, m, s = map(int,a6)
+            self.hide()
+            self.exp = Experiment(self.ex1, self.hint1.text(), self.ex2, self.hint2.text(), self.ex3, self.hint3.text(), self.ex4, self.hint4.text(), self.ex5, self.hint5.text(), self.ex6, self.hint6.text())
+            self.tw = ThirdWin(self.exp, self.start_time)
+        except Exception as er:
 
-    
+            self.errop.setText("Ошибка ввода времени либо колличества")
+            
+ 
+        
+
     
 
 #app = QApplication([])
